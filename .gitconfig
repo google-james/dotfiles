@@ -5,4 +5,10 @@
 	email = 854953+jamiekt@users.noreply.github.com
 [push]
 	autoSetupRemote = true
-  
+
+[alias]
+	# from https://youtu.be/aolI_Rz0ZqY?t=700
+	fblame = blame -w -C -C -C
+[rerere]
+	# from https://youtu.be/aolI_Rz0ZqY?t=904
+	enabled = true
