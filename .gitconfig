@@ -12,3 +12,6 @@
 [rerere]
 	# from https://youtu.be/aolI_Rz0ZqY?t=904
 	enabled = true
+[branch]
+	# from https://youtu.be/aolI_Rz0ZqY?t=1034
+	sort = -committerdate
