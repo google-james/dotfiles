@@ -118,5 +118,3 @@ alias ls='exa --color=auto'
 prompt_context() {}
 
 
-# git aliases
-git config --global alias.fblame 'blame -w -C -C -C' # from https://youtu.be/aolI_Rz0ZqY?t=700
