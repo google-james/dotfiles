@@ -96,13 +96,15 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+export TRIBE=data-solutions
+export SQUAD=hellotech-data-enablement
 alias gitlogonelinepretty='git log --pretty=format:"%C(yellow)%h %Cred%ad %Cblue%an %Cgreen%s" --date=short'
 alias glop=gitlogonelinepretty
 alias gitbranchclean='git remote prune origin && git branch --merged | egrep -v "(^\*|main|dev|master)" | xargs git branch -d'
 alias gitlogcurrentworkingdirectory='git log --oneline -- **/*'
 alias glcwd=gitlogcurrentworkingdirectory
 alias gprom='git pull --rebase origin master'
-alias hflabels='gh pr edit $(git rev-parse --abbrev-ref HEAD) --add-label "tribe: data-solutions" --add-label "squad: enablement"'
+alias hflabels='gh pr edit $(git rev-parse --abbrev-ref HEAD) --add-label "tribe: ${TRIBE}" --add-label "squad: ${SQUAD}"'
 alias assignme='gh pr edit $(git rev-parse --abbrev-ref HEAD) --add-assignee @me'
 alias pr-create='gh pr create && hflabels && assignme'
 alias need-dev='gh pr edit $(git rev-parse --abbrev-ref HEAD) --add-label "need-dev"'
