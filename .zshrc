@@ -106,7 +106,7 @@ alias glcwd=gitlogcurrentworkingdirectory
 alias gprom='git pull --rebase origin master'
 alias hflabels='gh pr edit $(git rev-parse --abbrev-ref HEAD) --add-label "tribe: ${TRIBE}" --add-label "squad: ${SQUAD}"'
 alias assignme='gh pr edit $(git rev-parse --abbrev-ref HEAD) --add-assignee @me'
-alias pr-create='gh pr create && hflabels && assignme'
+alias pr-create='gh pr create --draft && hflabels && assignme'
 alias need-dev='gh pr edit $(git rev-parse --abbrev-ref HEAD) --add-label "need-dev"'
 
 # These came from https://dev.to/joaovitor/exa-instead-of-ls-1onl
