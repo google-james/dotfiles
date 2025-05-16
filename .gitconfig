@@ -8,7 +8,7 @@
 
 [alias]
 	# from https://youtu.be/aolI_Rz0ZqY?t=700
-	fblame = blame -w -C -C -C
+	fblame = blame -w -C -C -C --color-by-age
 [rerere]
 	# from https://youtu.be/aolI_Rz0ZqY?t=904
 	enabled = true
