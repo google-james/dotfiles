@@ -25,6 +25,15 @@ if [ -x /usr/libexec/path_helper ]; then
   eval "$(/usr/libexec/path_helper -s)"
 fi
 
+# Claude Code / Vertex AI Configuration
+export ANTHROPIC_VERTEX_PROJECT_ID="altostrat-demo-464509"
+export CLAUDE_CODE_USE_VERTEX=1
+
+# Load local/secret environment variables if file exists (untracked by git)
+if [ -f "${HOME}/.zshrc.local" ]; then
+  source "${HOME}/.zshrc.local"
+fi
+
 # Custom Zsh Helper Functions
 set_alacritty_bg() {
   local color=$1
