@@ -9,10 +9,10 @@ esac
 
 # 1. Automate package bootstrapping on GCP Workstations (Linux/Debian)
 if command -v apt-get >/dev/null 2>&1; then
-  if ! command -v tmux >/dev/null 2>&1 || ! command -v zsh >/dev/null 2>&1; then
-    echo "⚠️  Detected cold-booted GCP Workstation. Ephemeral packages (tmux, zsh) are missing!" >&2
+  if ! command -v tmux >/dev/null 2>&1 || ! command -v zsh >/dev/null 2>&1 || ! command -v zoxide >/dev/null 2>&1 || ! command -v direnv >/dev/null 2>&1; then
+    echo "⚠️  Detected cold-booted GCP Workstation. Ephemeral packages (tmux, zsh, zoxide, direnv) are missing!" >&2
     echo "🚀 Automating installation..." >&2
-    sudo apt-get update -y && sudo apt-get install -y tmux zsh >&2
+    sudo apt-get update -y && sudo apt-get install -y tmux zsh zoxide direnv >&2
   fi
 fi
 
