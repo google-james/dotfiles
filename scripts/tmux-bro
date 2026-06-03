@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+dir=$(zoxide query -l 2>/dev/null | fzf --reverse --header="Create Session in Dir" --prompt="Dir> ")
+if [[ -n "$dir" ]]; then
+    name=$(basename "$dir" | tr '.' '_')
+    tmux new-session -d -s "$name" -c "$dir" 2>/dev/null
+    tmux switch-client -t "$name"
+fi

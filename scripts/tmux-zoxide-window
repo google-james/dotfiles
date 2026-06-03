@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+dir=$(zoxide query -l 2>/dev/null | fzf --reverse --header="Open New Tmux Window" --prompt="Dir> ")
+if [[ -n "$dir" ]]; then
+    tmux new-window -c "$dir"
+fi

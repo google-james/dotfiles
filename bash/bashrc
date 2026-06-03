@@ -1,0 +1,30 @@
+# ~/.bashrc
+# Sourced by non-login interactive bash shells, and sourced by bash_profile
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# 1. Automate package bootstrapping on GCP Workstations (Linux/Debian)
+if command -v apt-get >/dev/null 2>&1; then
+  if ! command -v tmux >/dev/null 2>&1 || ! command -v zsh >/dev/null 2>&1; then
+    echo "⚠️  Detected cold-booted GCP Workstation. Ephemeral packages (tmux, zsh) are missing!" >&2
+    echo "🚀 Automating installation..." >&2
+    sudo apt-get update -y && sudo apt-get install -y tmux zsh >&2
+  fi
+fi
+
+# 2. Self-heal broken/missing dotfile symlinks
+if [ -d "${HOME}/dotfiles" ] && [ -f "${HOME}/dotfiles/install.sh" ]; then
+  if [ ! -f "${HOME}/.zshrc" ] || [ ! -f "${HOME}/.tmux.conf" ]; then
+    echo "🔗 Restoring missing dotfile symlinks..." >&2
+    bash "${HOME}/dotfiles/install.sh" >&2
+  fi
+fi
+
+# 3. Seamlessly switch to zsh on Linux/Workstation interactive sessions
+if [[ "$OSTYPE" == "linux-gnu"* ]] && command -v zsh >/dev/null 2>&1; then
+  exec zsh -l
+fi

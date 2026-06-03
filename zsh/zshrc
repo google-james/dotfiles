@@ -1,0 +1,116 @@
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load.
+ZSH_THEME="robbyrussell"
+
+# Loaded Zsh plugins
+plugins=(
+  git
+  tmux
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# PATH Configuration
+if command -v brew >/dev/null 2>&1; then
+  export PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$PATH"
+fi
+export PATH="$HOME/.local/bin:$PATH"
+
+# Ensure Google-managed paths (mule, tmx2, etc.) are loaded
+if [ -x /usr/libexec/path_helper ]; then
+  eval "$(/usr/libexec/path_helper -s)"
+fi
+
+# Custom Zsh Helper Functions
+set_alacritty_bg() {
+  local color=$1
+  if [ -n "$TMUX" ]; then
+    printf "\033Ptmux;\033\033]11;%s\007\033\\" "$color"
+  else
+    printf "\e]11;%s\a" "$color"
+  fi
+}
+
+ssh() {
+  if [[ "$*" == *".googlers.com"* ]] || [[ "$*" == *"cloudtop"* ]]; then
+    set_alacritty_bg "#0D1117"
+    if [ -n "$TMUX" ]; then
+      tmux set -g pane-active-border-style "bg=#0D1117,fg=red"
+      tmux set -g status-bg "#0D1117"
+      tmux set -g status-left "#[bg=red,fg=white,bold] SSH 🚀 #[default] "
+      tmux rename-window "💼 WORK"
+    fi
+    command ssh "$@"
+    set_alacritty_bg "#1E1E2E"
+    if [ -n "$TMUX" ]; then
+      tmux set -g pane-active-border-style "fg=colour113,bg=default"
+      tmux set -g status-bg colour233
+      tmux set -g status-left "#[fg=green]#S "
+      tmux rename-window "zsh"
+      tmux refresh-client -S
+    fi
+  else
+    command ssh "$@"
+  fi
+}
+
+dev() {
+  local branch=$(git branch --show-current)
+  local port=$(( 3000 + $(echo "$branch" | cksum | cut -d' ' -f1) % 1000 ))
+  echo "▶ $branch → port $port"
+  PORT=$port npm run dev
+}
+
+wma() { wm add "${1:?feature name required}" }
+wmn() { wm add "${1:?feature name required}" -p "$(cat ./docs/spec-${1}.md)" }
+sn() { spec new "${1:?name required}" --repo . }
+sr() { spec review "${1:?name required}" --repo . }
+ss() { spec ship "${1:?name required}" }
+
+# Aliases
+alias wm='workmux'
+alias claude-pro="claude"
+alias cc-vertex="CLAUDE_CODE_USE_VERTEX=1 ANTHROPIC_VERTEX_PROJECT_ID=altostrat-demo-464509 claude"
+alias gemini-pro="gemini"
+alias dashboard="tmux-dashboard"
+alias ssh-work='ssh -t altostrat-workstation "tmux attach -t work || tmux new -s work"'
+
+# External completions & tool initializations
+[ -f "/Users/james/.openclaw/completions/openclaw.zsh" ] && source "/Users/james/.openclaw/completions/openclaw.zsh"
+eval "$(zoxide init zsh)"
+eval "$(direnv hook zsh)"
+
+# History Settings
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+HISTSAVE=100000
+setopt append_history
+setopt share_history
+setopt inc_append_history
+setopt hist_ignore_all_dups
+
+# Custom Prompt
+gcloud_config() {
+  echo "${CLOUDSDK_ACTIVE_CONFIG_NAME:-$(cat ~/.config/gcloud/active_config 2>/dev/null)}"
+}
+git_branch() {
+  git branch 2>/dev/null | grep '^\*' | sed 's/\* //'
+}
+git_dirty() {
+  git diff --quiet 2>/dev/null || echo ' ✗'
+}
+
+if [ -n "$WEB_HOST" ]; then
+  LOCATION_NAME="WORKSTATION"
+  LOCATION_COLOR="blue"
+else
+  LOCATION_NAME="LOCAL"
+  LOCATION_COLOR="green"
+fi
+
+setopt PROMPT_SUBST
+PROMPT='%F{${LOCATION_COLOR}}[${LOCATION_NAME}]%f %(?.%F{green}➜.%F{red}➜)%f  %F{cyan}%1~%f $(git_branch | xargs -I{} echo "%F{blue}git:(%F{red}{}%F{blue})%f")$(git_dirty) %F{yellow}[$(gcloud_config)]%f '

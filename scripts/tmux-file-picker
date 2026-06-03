@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+file=$(fzf --reverse --header="Select File to Edit" --prompt="File> ")
+if [[ -n "$file" ]]; then
+    tmux send-keys "nvim \"$file\"" C-m
+fi

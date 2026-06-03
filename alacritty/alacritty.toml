@@ -1,0 +1,66 @@
+[terminal.shell]
+program = "/bin/zsh"
+
+[env]
+TERM = "xterm-256color"
+
+[window]
+padding = { x = 12, y = 12 }
+dynamic_padding = true
+opacity = 0.95
+decorations = "buttonless"
+
+[font]
+normal = { family = "MesloLGS Nerd Font", style = "Regular" }
+size = 13.0
+offset = { x = 0, y = 1 }
+
+[colors.primary]
+background = "#1E1E2E"
+foreground = "#CDD6F4"
+dim_foreground = "#7F849C"
+
+[colors.cursor]
+text = "#1E1E2E"
+cursor = "#F5E0DC"
+
+[colors.normal]
+black   = "#45475A"
+red     = "#F38BA8"
+green   = "#A6E3A1"
+yellow  = "#F9E2AF"
+blue    = "#89B4FA"
+magenta = "#F5C2E7"
+cyan    = "#94E2D5"
+white   = "#BAC2DE"
+
+[colors.bright]
+black   = "#585B70"
+red     = "#F38BA8"
+green   = "#A6E3A1"
+yellow  = "#F9E2AF"
+blue    = "#89B4FA"
+magenta = "#F5C2E7"
+cyan    = "#94E2D5"
+white   = "#A6ADC8"
+
+# Custom keyboard bindings mapping for Command+Keys to Tmux commands
+[[keyboard.bindings]]
+chars = "\u0006\u001B[D"  # prefix + Left (C-f Left)
+key = "H"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0006\u001B[B"  # prefix + Down (C-f Down)
+key = "J"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0006\u001B[A"  # prefix + Up (C-f Up)
+key = "K"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0006\u001B[C"  # prefix + Right (C-f Right)
+key = "L"
+mods = "Command"
